@@ -790,8 +790,13 @@ A soft proxy for public interest. No auth.
 
 **Ticketmaster Discovery API**
 Upcoming concerts, sport, and large gatherings by city and date.
-Useful for crowd-related liability, accident, or event-cancellation exposure.
-Strong signal, but API-key access may be needed.
+Why it matters for insurance: a large gathering concentrates people and traffic in
+one place at one time, which can lift exposure across several lines at once —
+personal accident and injury, public liability for the venue or organiser,
+opportunistic theft (contents and travel), motor incidents around the venue, and
+event-cancellation cover itself. A single concert rarely moves an insurer's numbers,
+but a cluster of big events in a city over a short window is a signal worth flagging.
+API-key access may be needed (see below).
 
 You do not need all five. Pick a small set and make it work.
 
@@ -799,10 +804,18 @@ You do not need all five. Pick a small set and make it work.
 
 Ticketmaster is optional for this challenge. It provides information about future
 public gatherings: event names, dates, cities, venues, categories, and links —
-useful when you want to reason about crowd-related exposure.
+useful when you want to reason about the crowd-related exposure described above
+(accident, injury, liability, theft, and event-cancellation).
+
+It also earns its place for a second reason: it is the only source here that needs
+an API key. That makes it the natural point in the lab to practise **handling a
+secret safely** — a core question for any real agentic system. Store the key as an
+environment variable, pass it to the tool at run time, and never write it into a
+skill, an agent file, a report, or anything you commit. If your agent needs the key,
+it should read it from the environment, not from a file in the repo.
 
 If your group wants it, one more technical colleague can create the developer app
-and share the key within the group for the workshop. Do not commit the key into any file.
+and share the key within the group for the workshop.
 
 If Ticketmaster setup is blocked, continue with the no-auth sources
 (weather, holidays, news) and state the limitation in your report.
