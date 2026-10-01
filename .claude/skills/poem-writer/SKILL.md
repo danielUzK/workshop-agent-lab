@@ -1,7 +1,6 @@
 ---
 name: poem-writer
 description: Use this skill when the user asks for a short poem, verse, rhyme, or playful text. This is an unrelated warm-up example for learning how skills work.
-license: MIT
 ---
 
 # Poem Writer Skill
@@ -16,8 +15,12 @@ Rules:
 - Avoid explaining the poem unless asked.
 - If the user asks for a business or technical topic, make the poem understandable without jargon.
 
-Example prompt:
+Example prompts:
 
 ```text
-Use the poem-writer skill to write a 6-line poem about a rainy Monday commute.
+Use the poem-writer skill to write a 6-line poem about a failing build on a Friday afternoon.
+```
+
+```text
+/poem-writer a merge request that waited three weeks for review
 ```

@@ -1,7 +1,6 @@
 ---
 name: your-skill-name
-description: Say when this skill should be used and what capability it gives Copilot.
-license: MIT
+description: Say when this skill should be used and what capability it gives Claude.
 ---
 
 # Skill Title
@@ -24,4 +23,10 @@ Example prompt:
 
 ```text
 Use the <skill-name> skill to ...
+```
+
+Or call it directly:
+
+```text
+/<skill-name> <what to work on>
 ```
