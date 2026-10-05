@@ -1,17 +1,17 @@
 # Workshop Agent Lab — Emerging Risk & Claims Signals
 
-Welcome. In this lab you will build an agentic system with GitHub Copilot CLI.
+Welcome. In this lab you will build an agentic system with Claude Code.
 
 The final goal is a grounded report about upcoming public events and conditions
 in Europe that could create **unusual insurance claim activity**.
 The system should find signals, evaluate them, and explain what a human analyst
 in claims, risk, or underwriting should look at next.
 
-You will not start by writing an agent framework. You will build with Copilot CLI-native building blocks:
+You will not start by writing an agent framework. You will build with Claude Code-native building blocks:
 
 - **skills**: reusable instructions for a capability
-- **agents**: specialist roles with their own instructions and tool access
-- **the main Copilot session**: the coordinator that plans, delegates, and combines results
+- **subagents**: specialist roles with their own instructions, context window, and tool access
+- **the main Claude Code session**: the coordinator that plans, delegates, and combines results
 - **public data sources**: evidence for the report
 
 The README is the main guide. Move through it at your own pace.
@@ -34,12 +34,13 @@ agent exercise: the system has to stay honest about what it does and does not kn
 
 You are building an agentic system, not a prediction engine.
 
-## What Is GitHub Copilot CLI?
+## What Is Claude Code?
 
-GitHub Copilot CLI is a chat-based AI assistant that runs in your terminal.
+Claude Code is Anthropic's agentic coding assistant that runs in your terminal
+(it is also available in VS Code, JetBrains, a desktop app, and the browser).
 Instead of only suggesting code inside an editor, it can work with the files in this folder and help execute a workflow.
 
-In this lab, Copilot CLI can:
+In this lab, Claude Code can:
 
 | Capability | What it means here |
 | --- | --- |
@@ -47,44 +48,46 @@ In this lab, Copilot CLI can:
 | Read files | It can inspect this README, skills, agents, and outputs. |
 | Write files | It can create skills, agents, summaries, and reports. |
 | Run commands | It can call tools such as `curl` when you approve. |
+| Search the web | It can use web search and web fetch to discover sources. |
 | Use skills | It can load reusable instructions for specific tasks. |
-| Use agents | It can delegate work to specialist roles. |
+| Use subagents | It can delegate work to specialist roles. |
 
 Think of it as the **workspace where your agentic system runs**.
-You will design the skills and agents; Copilot CLI will use them to do the work.
+You will design the skills and agents; Claude Code will use them to do the work.
 
-Important: Copilot CLI is powerful because it can read files, edit files, and run commands.
+Important: Claude Code is powerful because it can read files, edit files, and run commands.
 Review what it plans to do, especially before allowing terminal commands or using API keys.
 
-## Which Copilot Mode Should You Use?
+## Which Permission Mode Should You Use?
 
-In this lab, Copilot CLI has two jobs:
+In this lab, Claude Code has two jobs:
 
 1. help you **build** skills and agents
 2. help you **run** the agentic system you built
 
 That can feel confusing at first, because both happen in the same terminal.
 Use the mode based on what you are trying to do.
+Press `Shift+Tab` to cycle through the modes; the current mode is shown below the input box.
 
 | Mode | Use it for |
 | --- | --- |
-| **Interactive** | Default. Run your agentic system step by step and stay in control. |
-| **Plan** | Ask Copilot to think through a design before changing files. |
-| **Autopilot** | Let Copilot continue working more independently on a clear task. |
+| **Default** | Claude asks before editing files or running commands. Stay in control. |
+| **Plan mode** | Claude explores and proposes a plan, but does not change files. |
+| **Accept edits** | Claude edits files without asking each time; commands still need approval. |
 
 Recommendation for this workshop:
 
-Use **interactive mode** as the default, especially while your group is still learning.
+Use **default mode**, especially while your group is still learning.
 It is the easiest way to inspect evidence, discuss results, and correct the system.
 
-Use **autopilot** later if your agentic system is already clear and you want Copilot
-to run the full workflow more independently.
+Use **plan mode** before bigger design changes, and **accept edits** later if your
+agentic system is already clear and you want Claude to run the full workflow more independently.
 
 Useful commands:
 
 ```text
-/plan       plan before changing files
-/autopilot  toggle more autonomous work
+Shift+Tab   cycle default / accept edits / plan mode
+/permissions  review which tools and commands are pre-approved
 ```
 
 ## Which Model Should You Use?
@@ -93,17 +96,22 @@ Use a fast, low-cost model by default.
 This lab is mostly about designing skills, agents, evidence trails, and reports.
 You do not need the strongest model for every step.
 
-| Task | Recommended model style |
+| Task | Recommended model |
 | --- | --- |
-| Writing skills and agents | Fast, cheap model |
-| Fetching and summarizing evidence | Fast, cheap model |
-| Reviewing weak evidence | Stronger model if available |
-| Final report polish | Stronger model if available |
+| Writing skills and agents | Haiku or Sonnet |
+| Fetching and summarizing evidence | Haiku |
+| Reviewing weak evidence | Sonnet or Opus |
+| Final report polish | Sonnet or Opus |
 
-Good default:
+Switch models inside a session:
 
-- use a Haiku-class model or a GPT mini-class model if your setup offers one
-- use a stronger model only when the output quality clearly needs it
+```text
+/model
+```
+
+Subagents can have their own model. Add `model: haiku` (or `sonnet`, `opus`, `inherit`)
+to an agent's frontmatter so cheap collection work runs on a cheap model
+while the lead session uses a stronger one.
 
 If you use the LiteLLM fallback, a facilitator may provide a model name.
 Set it with:
@@ -111,13 +119,13 @@ Set it with:
 macOS / Linux:
 
 ```bash
-export COPILOT_MODEL="<MODEL_NAME>"
+export ANTHROPIC_MODEL="<MODEL_NAME>"
 ```
 
 Windows PowerShell:
 
 ```powershell
-$env:COPILOT_MODEL = "<MODEL_NAME>"
+$env:ANTHROPIC_MODEL = "<MODEL_NAME>"
 ```
 
 ## Work In Balanced Teams
@@ -141,12 +149,12 @@ This workshop material is released under the MIT License. See [LICENSE](LICENSE)
 
 You do not need to be a developer to participate.
 
-You will use a terminal, but most steps can be done by asking Copilot CLI to create or edit files for you.
+You will use a terminal, but most steps can be done by asking Claude Code to create or edit files for you.
 If terminal commands are unfamiliar, work in pairs and copy the commands exactly.
 
 Use this rule of thumb:
 
-- **Green path**: use Copilot prompts, inspect what it created, and discuss the result.
+- **Green path**: use Claude prompts, inspect what it created, and discuss the result.
 - **Yellow path**: edit Markdown files by hand if you are comfortable.
 - **Red path**: write code only if your team wants to go further.
 
@@ -157,11 +165,12 @@ Skills and agents are mostly structured text, not software engineering.
 
 | Term | Short meaning |
 | --- | --- |
-| **Copilot CLI** | The terminal chat tool that can read files, create files, run commands, and use agents. |
+| **Claude Code** | The terminal chat tool that can read files, create files, run commands, and use subagents. |
+| **CLAUDE.md** | Project-wide instructions Claude Code loads automatically in every session. |
 | **Skill** | Reusable instructions for doing one task well. |
-| **Agent** | A named specialist role with a responsibility. |
-| **Tool** | An action Copilot can take, such as reading a file, editing a file, running `curl`, or calling an API. |
-| **Orchestration** | One lead agent coordinating smaller specialist agents and combining their results. |
+| **Agent / subagent** | A named specialist role with a responsibility and its own context window. |
+| **Tool** | An action Claude can take, such as reading a file, editing a file, running `curl`, or calling an API. |
+| **Orchestration** | One lead session coordinating smaller specialist subagents and combining their results. |
 | **Evidence** | Public data, links, API results, or saved files that support a claim. |
 | **Evidence trail** | A readable folder showing what the system fetched, summarized, and used. |
 | **Grounded report** | A report that separates observations, assumptions, and uncertainty. |
@@ -172,7 +181,7 @@ Skills and agents are mostly structured text, not software engineering.
 | Concept | Use it for | Example |
 | --- | --- | --- |
 | **Skill** | How to do a repeatable task. | `weather-hazard-lookup`, `report-writer` |
-| **Agent** | Who owns a responsibility. | `hazard-scout`, `evidence-reviewer` |
+| **Subagent** | Who owns a responsibility. | `hazard-scout`, `evidence-reviewer` |
 | **Tool** | What action the system can take. | `curl`, file read/write, API call |
 
 Simple rule:
@@ -191,9 +200,10 @@ The tool is the actual `curl` command or API call.
 By the end, your repo should contain:
 
 ```text
-.github/
+CLAUDE.md
+.claude/
   agents/
-    one-or-more-custom-agents.agent.md
+    one-or-more-custom-agents.md
   skills/
     multiple-skill-folders/
       SKILL.md
@@ -216,7 +226,7 @@ Important: public data can suggest risk signals. It does not prove future claims
 
 Use this as a guide, not a rule.
 
-- **0:00-0:30**: Start Copilot CLI and play with the warm-up examples.
+- **0:00-0:30**: Start Claude Code and play with the warm-up examples.
 - **0:30-1:00**: Learn skills and create your first own skill.
 - **1:00-1:45**: Learn agents and create your first own agent.
 - **1:45-2:30**: Explore public data sources yourself.
@@ -224,7 +234,7 @@ Use this as a guide, not a rule.
 - **3:30-4:00**: Generate, review, and improve the final report.
 - **4:00+**: Add another agent, HTML output, or a use case from your own work.
 
-## 1. Start Copilot CLI
+## 1. Start Claude Code
 
 Open a terminal in this folder:
 
@@ -240,66 +250,69 @@ Windows PowerShell:
 cd workshop-agent-lab
 ```
 
-Check that Copilot CLI is installed:
+Check that Claude Code is installed:
 
 ```bash
-copilot --version
+claude --version
 ```
 
 If you see `command not found` or a similar error, stop here and ask a facilitator.
 Do not spend workshop time debugging installation alone.
+(For reference, the installer is `curl -fsSL https://claude.ai/install.sh | bash` on macOS / Linux
+or `irm https://claude.ai/install.ps1 | iex` in Windows PowerShell.)
 
-If this works, start Copilot:
+If this works, start Claude Code:
 
 ```bash
-copilot
+claude
 ```
 
 Then try:
 
 ```text
-/env
-/skills
-/agent
+/memory
+/agents
+/context
 ```
 
-These commands show what Copilot loaded from the repository.
+These commands show what Claude Code loaded from the repository:
+`/memory` shows `CLAUDE.md`, `/agents` lists the subagents, and `/context` shows what is
+currently using the context window (including skills).
+Type `/` on its own to see all commands; skills you can invoke directly also appear there.
 If one of these commands opens a view or menu, press `Esc` to return to the chat.
 
 ## 2. Authenticate
 
-Use GitHub SSO as the default path:
+The first time you run `claude`, it opens a browser login.
+Sign in with the Claude account (Pro, Max, Team, or Enterprise) or Claude Console account
+your facilitator told you to use. You can switch accounts later with:
 
-```bash
-copilot login
+```text
+/login
 ```
 
-Follow the browser flow and sign in with your GitHub account.
-
-If SSO does not work, ask a facilitator for the LiteLLM fallback details. Then use:
+If login does not work, ask a facilitator for the LiteLLM fallback details. Then use:
 
 macOS / Linux:
 
 ```bash
-export COPILOT_PROVIDER_BASE_URL="<LITELLM_BASE_URL>/v1"
-export COPILOT_PROVIDER_API_KEY="<WORKSHOP_KEY>"
-export COPILOT_MODEL="<MODEL_NAME>"
+export ANTHROPIC_BASE_URL="<LITELLM_BASE_URL>"
+export ANTHROPIC_AUTH_TOKEN="<WORKSHOP_KEY>"
+export ANTHROPIC_MODEL="<MODEL_NAME>"
 ```
 
 Windows PowerShell:
 
 ```powershell
-$env:COPILOT_PROVIDER_BASE_URL = "<LITELLM_BASE_URL>/v1"
-$env:COPILOT_PROVIDER_API_KEY = "<WORKSHOP_KEY>"
-$env:COPILOT_MODEL = "<MODEL_NAME>"
+$env:ANTHROPIC_BASE_URL = "<LITELLM_BASE_URL>"
+$env:ANTHROPIC_AUTH_TOKEN = "<WORKSHOP_KEY>"
+$env:ANTHROPIC_MODEL = "<MODEL_NAME>"
 ```
 
 Then test:
 
 ```bash
-copilot -p "Reply with exactly READY" \
-  --allow-all-tools \
-  --silent
+claude -p "Reply with exactly READY"
 ```
 
 If you are on a managed laptop and something fails, work with a partner or ask a facilitator.
@@ -310,14 +323,14 @@ The lab is designed so teams can share one working setup.
 This repo starts with one unrelated example:
 
 ```text
-.github/skills/poem-writer/SKILL.md
-.github/agents/poet.agent.md
+.claude/skills/poem-writer/SKILL.md
+.claude/agents/poet.md
 ```
 
 The example is intentionally not about insurance. It lets you learn the mechanics first,
 without worrying about the domain.
 
-In Copilot CLI, try:
+In Claude Code, try:
 
 > Use the poem-writer skill to write a 6-line poem about a rainy Monday commute.
 
@@ -327,9 +340,9 @@ Then try the agent:
 
 You can use agents and skills interchangeably in prompts:
 
-- tell Copilot to use a specific skill
-- tell Copilot to use a specific agent
-- ask normally and let Copilot infer what fits
+- tell Claude to use a specific skill, or invoke it directly with `/poem-writer`
+- tell Claude to use a specific agent, or mention it with `@poet`
+- ask normally and let Claude infer what fits from the descriptions
 
 The files are plain Markdown. Open them and inspect how little structure is needed.
 
@@ -338,11 +351,11 @@ The files are plain Markdown. Open them and inspect how little structure is need
 Write the first skill yourself. This is the moment where you learn what a skill actually is.
 
 Skills are best for repeatable instructions that should only appear when relevant.
-They are not global behavior rules. Global rules belong in `.github/copilot-instructions.md`.
+They are not global behavior rules. Global rules belong in `CLAUDE.md`.
 
 Think of a skill as a reusable method or checklist.
 It usually does not own the whole problem.
-It helps an agent or the main Copilot session do one task consistently.
+It helps an agent or the main Claude Code session do one task consistently.
 
 Good skills are:
 
@@ -350,12 +363,12 @@ Good skills are:
 - **easy to trigger**: the description says when to use it
 - **specific**: clear steps, rules, and output format
 - **safe**: no hidden secrets, no unnecessary command execution
-- **testable**: you can ask Copilot to use it and judge the result
+- **testable**: you can ask Claude to use it and judge the result
 
 Create a new folder and file:
 
 ```text
-.github/skills/concise-summarizer/SKILL.md
+.claude/skills/concise-summarizer/SKILL.md
 ```
 
 You can copy the structure from:
@@ -388,35 +401,28 @@ Rules:
 
 Skill-writing tips:
 
-- Put the most important behavior in the `description`; Copilot uses it to decide when the skill is relevant.
+- Put the most important behavior in the `description`; Claude uses it to decide when the skill is relevant.
 - Use lowercase names with hyphens, for example `concise-summarizer`.
 - Write instructions as if you were briefing a smart colleague.
 - Add one example prompt so future users know how to invoke it.
 - Avoid vague rules like "be good" or "be accurate." Say what accuracy means.
 
-After you wrote it, ask Copilot to review it:
+After you wrote it, ask Claude to review it:
 
 > Review my concise-summarizer skill.
 > Is it clear when to use it?
 > Would you follow the rules correctly?
 > Suggest improvements, but do not edit the file yet.
 
-Reload skills after creating or changing them:
+Claude Code picks up skills from `.claude/skills/`. Check that it sees your new one
+by typing `/` and looking for `concise-summarizer`, or ask:
 
-```text
-/skills reload
-```
+> Which skills are available in this project?
 
-If that does not show the new skill, restart Copilot:
+If the new skill does not show up, exit (`/exit` or `Ctrl+C` twice) and restart Claude Code:
 
 ```bash
-copilot
-```
-
-Check:
-
-```text
-/skills
+claude
 ```
 
 Checkpoint:
@@ -430,7 +436,8 @@ Then improve the skill once:
 
 ## 5. Create Your First Agent
 
-Create an agent either through the CLI or by writing a file.
+In Claude Code, custom agents are called **subagents**.
+Create one either through the CLI or by writing a file.
 
 Agents are best for specialist roles.
 A good agent has a clear job, clear boundaries, and a clear moment when it should be used.
@@ -450,31 +457,33 @@ Avoid creating an agent when a short skill would be enough.
 Friendly CLI flow:
 
 ```text
-/agent
+/agents
 ```
 
-In the agent menu, press `n` to create a new agent.
-Then choose **Create manually**.
+In the agents menu, choose **Create new agent**, then **Project** (so it is saved in this repo).
+Then choose **Manual configuration** instead of generating it with Claude.
 This is important for the lab: you should write the agent instructions yourself,
 because that is where the learning happens.
 
-Create it in the project so your team can share it:
+Project agents live here, so your team can share them via git:
 
 ```text
-.github/agents/
+.claude/agents/
 ```
 
 File flow:
 
 ```text
-.github/agents/<your-agent-name>.agent.md
+.claude/agents/<your-agent-name>.md
 ```
 
 You can copy:
 
 ```text
-templates/agent-template.agent.md
+templates/agent-template.md
 ```
+
+If you create the file by hand, restart Claude Code (or open `/agents` again) so it is picked up.
 
 Both flows are valid.
 The CLI flow is friendlier.
@@ -483,16 +492,17 @@ The file flow makes the structure visible and easier to version.
 Agent-writing tips:
 
 - Choose a short lowercase name with hyphens.
-- Make the `description` concrete. This helps Copilot decide when to use the agent.
+- Make the `description` concrete. This helps Claude decide when to delegate to the agent.
 - Give the agent one main responsibility.
 - Tell it what not to do.
 - Tell it what output to return.
 - Start with fewer tools. Add more only when the agent needs them.
+- If you leave out `tools`, the agent inherits all tools from the main session.
 
 ### Agent Description Clinic
 
 The `description` is more important than it looks.
-Copilot uses it to decide when the agent should be suggested or used.
+Claude uses it to decide when the agent should be used.
 
 Use this pattern:
 
@@ -515,21 +525,24 @@ Stronger:
 > Do not claim that public data proves that claims will rise.
 
 In your group, compare two descriptions.
-Which one would Copilot understand more reliably?
+Which one would Claude understand more reliably?
 
 ### Choose Tools Deliberately
 
 An agent should only get tools it needs for its responsibility.
 Start small, then add more when the workflow proves it needs them.
 
-| Tool capability | Useful when the agent needs to... |
-| --- | --- |
-| Read files | Inspect skills, evidence, or prior reports. |
-| Edit files | Save reports, summaries, or evidence notes. |
-| Search locally | Find files or text inside the repo. |
-| Run commands | Query APIs with `curl` or process local files. |
-| Use web access | Discover or inspect public online sources. |
-| Use other agents | Delegate a focused subtask to a specialist. |
+| Tool capability | Claude Code tool names | Useful when the agent needs to... |
+| --- | --- | --- |
+| Read files | `Read` | Inspect skills, evidence, or prior reports. |
+| Edit files | `Write`, `Edit` | Save reports, summaries, or evidence notes. |
+| Search locally | `Grep`, `Glob` | Find files or text inside the repo. |
+| Run commands | `Bash` | Query APIs with `curl` or process local files. |
+| Use web access | `WebSearch`, `WebFetch` | Discover or inspect public online sources. |
+| Use skills | `Skill` | Load a skill's instructions inside the agent. |
+
+Note: subagents cannot spawn their own subagents.
+Delegation always goes from the main session to a subagent.
 
 Before adding a tool, ask:
 
@@ -544,7 +557,8 @@ For example:
 name: evidence-reviewer
 description: Reviews claims-signal reports for unsupported claims,
 missing sources, and overconfident wording.
-tools: ["read", "search"]
+tools: Read, Grep, Glob
+model: sonnet
 ---
 
 You are an evidence reviewer.
@@ -576,8 +590,8 @@ Then test whether the agent is easy to trigger:
 In this lab, orchestration means:
 
 ```text
-Lead Copilot session
-  -> delegates to specialist agents
+Lead Claude Code session
+  -> delegates to specialist subagents
   -> specialist agents use skills
   -> tools or shell commands fetch evidence
   -> lead combines everything into a report
@@ -586,23 +600,26 @@ Lead Copilot session
 Useful commands:
 
 ```text
-/agent    browse or create agents
-/skills   inspect available skills
-/tasks    inspect subagents and commands
-/fleet    enable parallel subagent execution
-/env      inspect loaded instructions, skills, agents, and tools
+/agents   browse, create, or edit subagents
+/memory   inspect or edit CLAUDE.md
+/context  inspect what is loaded into the context window
+/tasks    inspect background tasks
+/model    switch model
 ```
+
+Subagents can run in parallel. Ask for it explicitly, for example:
+"Run the hazard-scout and attention-analyst agents in parallel."
 
 Important idea:
 
-The lead Copilot session does not have to do everything itself.
+The lead Claude Code session does not have to do everything itself.
 It can delegate focused work to specialist agents.
 Those agents can use skills when their descriptions match the task.
 This keeps the lead session focused on planning, judgment, and final synthesis.
 
 For the final challenge, a useful team could be:
 
-- one lead agent that coordinates the investigation
+- the main session (guided by `CLAUDE.md` or a lead skill) that coordinates the investigation
 - one hazard/event-search agent
 - one public-attention agent
 - one evidence-review agent
@@ -620,18 +637,23 @@ Good orchestration usually has four parts:
 For this workshop, start small:
 
 ```text
-lead agent
+main session (lead)
   -> hazard scout
   -> evidence reviewer
   -> report writer skill
 ```
+
+Because subagents cannot delegate further, the **main session is the lead**.
+Put the lead's playbook in `CLAUDE.md` or in a `claims-signal-lead` skill.
+Alternatively, start Claude Code with `claude --agent claims-signal-lead`
+to make your lead agent the main session for that run.
 
 Only add more agents when the work is truly different.
 
 Orchestration prompts should be explicit:
 
 ```text
-Use the lead agent to coordinate this task.
+Act as the lead for this task.
 Delegate hazard and event discovery to the hazard-scout agent.
 Use the evidence-reviewer agent before writing the final report.
 Save all outputs in a timestamped folder under outputs/runs/.
@@ -679,7 +701,7 @@ Data-source agents should save:
 Common mistakes:
 
 - creating many agents with overlapping jobs
-- writing vague descriptions, so Copilot cannot choose the right agent
+- writing vague descriptions, so Claude cannot choose the right agent
 - skipping the reviewer step
 - letting the report make stronger claims than the evidence supports
 - hiding data retrievals inside the final report only
@@ -687,9 +709,10 @@ Common mistakes:
 
 Useful references:
 
-- Skills: [GitHub docs: adding agent skills](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills)
-- Agents: [GitHub docs: creating custom agents](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-custom-agents-for-cli)
-- Comparison: [GitHub docs: comparing CLI features](https://docs.github.com/en/copilot/concepts/agents/copilot-cli/comparing-cli-features)
+- Skills: [Claude Code docs: Agent Skills](https://code.claude.com/docs/en/skills)
+- Subagents: [Claude Code docs: Subagents](https://code.claude.com/docs/en/sub-agents)
+- Memory / CLAUDE.md: [Claude Code docs: Memory](https://code.claude.com/docs/en/memory)
+- CLI flags: [Claude Code docs: CLI reference](https://code.claude.com/docs/en/cli-reference)
 
 ## 7. Explore Data Sources Yourself
 
@@ -708,22 +731,23 @@ Look for sources with:
 - usable access from a browser or API
 - clear limitations
 
-Ask Copilot to help, but make it show sources and tradeoffs:
+Ask Claude to help, but make it show sources and tradeoffs:
 
 > Help me find public data sources for upcoming European hazards and events
 > that may affect insurance claim activity.
 > Prioritize sources I can query without authentication.
 > Give me source, signal type, access method, and limitation.
 
-You can also use Copilot CLI research mode for source discovery:
+Claude Code can search the web itself (`WebSearch` and `WebFetch` tools).
+For a deeper source sweep, ask it to research in plan mode (`Shift+Tab`) so it explores without editing files:
 
 ```text
-/research Find public data sources for upcoming European hazards and events that could affect insurance claim activity.
+Research public data sources for upcoming European hazards and events that could affect insurance claim activity.
 Focus on sources with dates, locations, severity signals, and usable access.
 Return source links, access method, strengths, and limitations.
 ```
 
-Use research mode to **find and compare sources**, not to skip the lab.
+Use web research to **find and compare sources**, not to skip the lab.
 Afterwards, turn the best source ideas into your own skills.
 
 For now, do not use hardcoded demo data.
@@ -1026,7 +1050,7 @@ Experiment with questions like:
 - Does this agent have a clear separate responsibility?
 - Are two agents doing the same job?
 - Would one stronger skill be simpler than another agent?
-- Does the lead agent know when to delegate?
+- Does the lead session (CLAUDE.md or lead skill) know when to delegate?
 
 Example prompt:
 
@@ -1040,7 +1064,7 @@ Example prompt:
 If you are not sure what to build, start with this:
 
 > Help our group design a simple agentic system.
-> We want one lead agent and two skills.
+> We want one lead (main session) plus one subagent and two skills.
 > Ask us three short questions, then create the first draft files.
 
 If your team is faster, extend the system:
@@ -1089,11 +1113,11 @@ Use this table to connect the morning concepts to what you built.
 
 | Concept | Where it appears in this repo |
 | --- | --- |
-| Prompting | The wording inside `SKILL.md` and `.agent.md` files. |
-| Tools | The actions Copilot can take: read, edit, search, run commands, use web access. |
-| Skills | Reusable task instructions under `.github/skills/`. |
-| Agents | Specialist roles under `.github/agents/`. |
-| Orchestration | The lead session or lead agent coordinating skills and agents. |
+| Prompting | The wording inside `CLAUDE.md`, `SKILL.md`, and agent files. |
+| Tools | The actions Claude can take: `Read`, `Edit`, `Grep`, `Bash`, `WebFetch`, and more. |
+| Skills | Reusable task instructions under `.claude/skills/`. |
+| Agents | Specialist subagents under `.claude/agents/`. |
+| Orchestration | The main session coordinating skills and subagents. |
 | RAG | Retrieved public or internal evidence added to the final reasoning. |
 | Evaluation | The evidence-review step and the run-diagnose-improve loop. |
 
@@ -1121,60 +1145,58 @@ Avoid:
 
 ## 13. Useful Commands
 
-Run a specific agent in prompt mode:
+Run a one-off prompt non-interactively (print mode):
+
+```bash
+claude -p "Summarize README.md in three bullets."
+```
+
+Run with a specific agent as the main session:
 
 macOS / Linux:
 
 ```bash
-copilot --agent poet \
-  -p "Write a 4-line poem about clean data." \
-  --allow-all-tools \
-  --silent
+claude --agent poet \
+  -p "Write a 4-line poem about clean data."
 ```
 
 Windows PowerShell:
 
 ```powershell
-copilot --agent poet `
-  -p "Write a 4-line poem about clean data." `
-  --allow-all-tools `
-  --silent
+claude --agent poet `
+  -p "Write a 4-line poem about clean data."
 ```
 
-Run from this repo explicitly:
+Pre-approve specific tools for a non-interactive run
+(safer than skipping all permission checks):
 
 macOS / Linux:
 
 ```bash
-copilot -C . \
-  --agent poet \
-  -p "Write a 4-line poem about clean data." \
-  --allow-all-tools \
-  --silent
+claude -p "Fetch the Berlin forecast from Open-Meteo and save a summary in outputs/." \
+  --allowedTools "Bash(curl:*)" "Write" "Read"
 ```
 
 Windows PowerShell:
 
 ```powershell
-copilot -C . `
-  --agent poet `
-  -p "Write a 4-line poem about clean data." `
-  --allow-all-tools `
-  --silent
+claude -p "Fetch the Berlin forecast from Open-Meteo and save a summary in outputs/." `
+  --allowedTools "Bash(curl:*)" "Write" "Read"
 ```
 
-Start interactively:
+Start interactively, or continue your last conversation:
 
 ```bash
-copilot
+claude
+claude --continue
 ```
 
 Inspect what is loaded:
 
 ```text
-/env
-/skills
-/agent
+/memory
+/agents
+/context
 ```
 
 ## 14. When You Get Stuck
@@ -1183,7 +1205,7 @@ Try one of these prompts:
 
 > Inspect this repository and explain the next smallest step.
 
-> Help me improve my agent description so Copilot knows when to use it.
+> Help me improve my agent description so Claude knows when to use it.
 
 > Review my skill. Is it specific enough for a model to follow?
 

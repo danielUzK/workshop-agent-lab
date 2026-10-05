@@ -1,6 +1,6 @@
-# Copilot Instructions
+# Project Instructions (CLAUDE.md)
 
-This repository is a workshop lab for learning GitHub Copilot CLI as an agent tool.
+This repository is a workshop lab for learning Claude Code as an agent tool.
 The challenge domain is insurance emerging-risk and claims signals.
 
 Default behavior:

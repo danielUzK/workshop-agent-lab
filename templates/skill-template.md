@@ -1,6 +1,6 @@
 ---
 name: your-skill-name
-description: Say when this skill should be used and what capability it gives Copilot.
+description: Say when this skill should be used and what capability it gives Claude.
 license: MIT
 ---
 

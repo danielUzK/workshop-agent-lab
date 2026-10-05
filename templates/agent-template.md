@@ -1,7 +1,7 @@
 ---
 name: your-agent-name
-description: Say when Copilot should use this agent. Mention the task, domain, and useful trigger words.
-tools: ["read", "search", "execute"]
+description: Say when Claude should use this agent. Mention the task, domain, and useful trigger words.
+tools: Read, Grep, Glob, Bash
 ---
 
 You are a specialist agent.
