@@ -1,56 +1,43 @@
-# Use-Case Canvas
+# My Idea
 
-> Describe the problem, never the real data. Use invented examples only.
+> Describe the task, never real content. Use invented examples only.
 
 ## 1. The problem
 
 - **Who has it?** (role, not name)
-- **How often?** (per day / week / sprint)
-- **What do they do today, step by step?**
-- **What is annoying, slow, or error-prone about it?**
+- **How often?**
+- **What do they do today?**
+- **What is annoying or slow about it?**
 
-## 2. The agent in one sentence
+## 2. The helper in one sentence
 
-> When <trigger>, the agent <does what> using <which input>, and returns <which output> to <whom>.
+> When <situation>, the helper takes <input> and creates <output> for <who>.
 
-## 3. Pattern
+## 3. Type of helper
 
-Drafter / Checker / Converter / Triage / Reporter / Coach / Pipeline (see README, Part 2)
+Writer / Checker / Converter / Explainer / Coach (see README, step 6.1)
 
-## 4. Input and output
+## 4. A good result
 
-| | Description | Invented example in this repo |
-| --- | --- | --- |
-| Input | | `examples/my-data/...` |
-| Output | | |
-
-What does a **good** output look like? Write down 3 concrete rules.
+Three rules for a good result:
 
 1.
 2.
 3.
 
-## 5. Building blocks
+One thing that must **never** happen:
 
-| Block | Name | Responsibility |
+-
+
+## 5. What I build
+
+| Part | Name | What it does |
 | --- | --- | --- |
 | Skill | | |
-| Subagent (optional) | | |
-| MCP server (optional) | | |
+| Helper agent (optional) | | |
 
-## 6. Guardrails
+## 6. To use it for real
 
-| Action | allow / ask / deny | Why |
-| --- | --- | --- |
-| | | |
-
-- Where must a human approve?
-- What must **never** happen?
-- What could a prompt injection in the input try to do?
-
-## 7. To make it real
-
-- Which real data or system would it need?
-- Who would have to agree (system owner, data protection, team)?
-- What is the smallest real pilot? (read-only, one team, two weeks)
-- How would you know it helps? (time saved, fewer review rounds, fewer incomplete tickets)
+- What real input would it need?
+- Who would have to agree?
+- What would be a small first try at work?

@@ -1,50 +1,7 @@
 {
   "permissions": {
     "defaultMode": "default",
-    "allow": [
-      "mcp__glab__glab_repo_list",
-      "mcp__glab__glab_repo_view",
-      "mcp__glab__glab_issue_list",
-      "mcp__glab__glab_issue_view",
-      "mcp__glab__glab_mr_list",
-      "mcp__glab__glab_mr_view",
-      "mcp__glab__glab_mr_diff",
-      "mcp__glab__glab_label_list",
-      "mcp__glab__glab_milestone_list",
-      "mcp__glab__glab_ci_list",
-      "mcp__glab__glab_ci_status"
-    ],
-    "ask": [
-      "mcp__glab__glab_issue_create",
-      "mcp__glab__glab_issue_update",
-      "mcp__glab__glab_issue_close",
-      "mcp__glab__glab_issue_reopen",
-      "mcp__glab__glab_issue_note",
-      "mcp__glab__glab_mr_create",
-      "mcp__glab__glab_mr_update",
-      "mcp__glab__glab_mr_note",
-      "mcp__glab__glab_mr_close",
-      "mcp__glab__glab_label_create",
-      "mcp__glab__glab_milestone_create",
-      "Bash(git push *)"
-    ],
     "deny": [
-      "mcp__glab__glab_api",
-      "mcp__glab__glab_mr_merge",
-      "mcp__glab__glab_mr_approve",
-      "mcp__glab__glab_mr_delete",
-      "mcp__glab__glab_issue_delete",
-      "mcp__glab__glab_repo_delete",
-      "mcp__glab__glab_repo_transfer",
-      "mcp__glab__glab_repo_archive",
-      "mcp__glab__glab_token_revoke",
-      "Bash(glab api *)",
-      "Bash(glab mr merge *)",
-      "Bash(glab repo delete *)",
-      "Bash(glab repo archive *)",
-      "Bash(glab issue delete *)",
-      "Bash(glab mr approve *)",
-      "Bash(glab mr delete *)",
       "Read(./.env)",
       "Read(./.env.*)"
     ]

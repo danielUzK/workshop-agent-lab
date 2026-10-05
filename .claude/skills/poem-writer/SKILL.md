@@ -22,5 +22,5 @@ Use the poem-writer skill to write a 6-line poem about a failing build on a Frid
 ```
 
 ```text
-/poem-writer a merge request that waited three weeks for review
+/poem-writer a meeting that could have been an email
 ```

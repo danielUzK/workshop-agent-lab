@@ -1,11 +1,11 @@
 ---
 name: your-skill-name
-description: Say when this skill should be used and what capability it gives Claude.
+description: Say what this skill does and when to use it, in one or two sentences.
 ---
 
 # Skill Title
 
-Use this skill when ...
+What this skill does, in one sentence.
 
 Rules:
 
@@ -13,20 +13,12 @@ Rules:
 - ...
 - ...
 
-Recommended workflow:
+The result looks like this:
 
-1. ...
-2. ...
-3. ...
+- ...
 
-Example prompt:
+Example:
 
 ```text
-Use the <skill-name> skill to ...
-```
-
-Or call it directly:
-
-```text
-/<skill-name> <what to work on>
+/your-skill-name <what to work on>
 ```
