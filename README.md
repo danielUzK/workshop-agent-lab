@@ -16,8 +16,8 @@ You will not start by writing an agent framework. You will build with Claude Cod
 
 The README is the main guide. Move through it at your own pace.
 
-For this version of the lab, use live public sources, public APIs,
-or allowed internal data.
+For this version of the lab, use only live public sources and public APIs.
+Do not use company-internal data.
 Do not rely on prebuilt demo data unless a facilitator explicitly adds it later.
 
 ## Start Here
@@ -760,46 +760,9 @@ Use web research to **find and compare sources**, not to skip the lab.
 Afterwards, turn the best source ideas into your own skills.
 
 For now, do not use hardcoded demo data.
-The default path is live public sources, public APIs, or allowed internal data.
+Use only live public sources and public APIs.
 
 Do not build yet. First compare options with your group.
-
-## Optional: Enrich With Internal Data
-
-If your group has internal data you are allowed to use, you can enrich the agentic system with it.
-
-Examples:
-
-- Databricks tables or SQL queries
-- Excel or CSV files
-- internal APIs
-- dashboard exports
-- historical claims counts, policy exposure by region, or catastrophe reserves
-
-This is a great place to create a dedicated skill.
-
-For example:
-
-- `databricks-claims-query`
-- `excel-exposure-loader`
-- `internal-api-evidence`
-- `claims-baseline-summary`
-
-Rules for internal data:
-
-- only use data you are allowed to access
-- do not commit secrets, tokens, or private data into the repo
-- save readable summaries in the timestamped run folder
-- describe the source and limitation without exposing sensitive details
-- keep raw internal data out of the repo unless you are sure it is allowed
-
-Useful prompt:
-
-> We have an internal export with claim counts by region and month.
-> Help us design a skill that reads or summarizes it safely.
-> The skill should save a readable evidence summary,
-> avoid exposing sensitive rows in the final report,
-> and state what internal validation is still needed.
 
 ## 8. Sources We Found Useful
 
@@ -945,27 +908,6 @@ The system should answer:
 
 This direction is useful for learning how to validate an agent instead of only trusting its future recommendations.
 
-### Capability C: Public Signals Plus Internal Context
-
-Build a system that combines public signals with allowed internal or mock internal data.
-
-Examples:
-
-- policy exposure or number of insured customers by region
-- historical claim baselines by month or peril
-- reserve or capacity context
-- Excel, CSV, Databricks, or internal API summaries
-
-The system should answer:
-
-- how does internal context change the interpretation?
-- which public signals still look relevant?
-- which signals become less important?
-- what should a human analyst check next?
-
-Use this direction only with data you are allowed to access and summarize.
-Do not commit secrets or sensitive data.
-
 > **Bring your own problem.** If your team finishes early, sketch an agentic
 > system for a challenge from your own daily work — a customer-service assistant
 > that reads across policy, billing, and claims notes, or an assistant that drafts
@@ -1053,7 +995,6 @@ If your team is faster, extend the system:
 
 - create an HTML report
 - add a source-specific skill
-- add an internal-data skill for Databricks, Excel, or an internal API
 - add an evidence-review agent
 - build a second agentic system for a problem from your own work
 
@@ -1100,7 +1041,7 @@ Use this table to connect the morning concepts to what you built.
 | Skills | Reusable task instructions under `.claude/skills/`. |
 | Agents | Specialist subagents under `.claude/agents/`. |
 | Orchestration | The main session coordinating skills and subagents. |
-| RAG | Retrieved public or internal evidence added to the final reasoning. |
+| RAG | Retrieved public evidence added to the final reasoning. |
 | Evaluation | The evidence-review step and the run-diagnose-improve loop. |
 
 ## 12. Report Checklist
