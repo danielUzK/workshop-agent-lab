@@ -22,3 +22,12 @@ When working on the final challenge, produce grounded reports with:
 - confidence level
 - limitations
 - recommended next analyst action
+
+## Workspace
+
+- This lab runs in a remote, browser-based VS Code workspace (Coder). `localhost` on this machine is not the user's laptop.
+- When starting a web server (for example an HTML report preview), bind it to `0.0.0.0`,
+  use a port between 3000 and 9000, run it in the background, and tell the user to open it via the **Ports** tab
+  in the terminal panel. Do not tell them to open `http://localhost:...` directly.
+- For a plain HTML page, `python3 -m http.server 8000` in the folder is enough.
+- Never print, store, or ask for API keys (for example `TICKETMASTER_API_KEY`). Read them from the environment.

@@ -1,5 +1,6 @@
 .DS_Store
 .env
+.claude/settings.local.json
 *.log
 outputs/*
 !outputs/.gitkeep

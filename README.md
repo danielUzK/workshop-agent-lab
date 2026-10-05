@@ -20,6 +20,23 @@ For this version of the lab, use live public sources, public APIs,
 or allowed internal data.
 Do not rely on prebuilt demo data unless a facilitator explicitly adds it later.
 
+## Start Here
+
+You need:
+
+- your laptop with a browser (nothing to install)
+- the link to your personal workspace (facilitators hand these out)
+
+Every participant works in their **own workspace**: VS Code running in your browser,
+on a machine in the cloud. Claude Code and this lab are already installed and logged in there.
+The hands-on part starts at [step 0](#0-open-your-workspace).
+
+> [!TIP]
+> **You never have to edit a file by hand.** Whenever this guide says "create a file"
+> or "change a setting", you can just ask Claude, for example:
+> *"Create a skill called concise-summarizer in .claude/skills/."* Claude shows you the change and asks before saving it.
+> Look out for the ✅ lines: they tell you what you should see when a step worked.
+
 ## Why This Case?
 
 Insurers care about what is coming, not only what already happened.
@@ -67,28 +84,24 @@ In this lab, Claude Code has two jobs:
 
 That can feel confusing at first, because both happen in the same terminal.
 Use the mode based on what you are trying to do.
-Press `Shift+Tab` to cycle through the modes; the current mode is shown below the input box.
+Press `Shift+Tab` to cycle through the modes. The status bar shows the active one.
 
-| Mode | Use it for |
-| --- | --- |
-| **Default** | Claude asks before editing files or running commands. Stay in control. |
-| **Plan mode** | Claude explores and proposes a plan, but does not change files. |
-| **Accept edits** | Claude edits files without asking each time; commands still need approval. |
+| Mode | Status bar | Use it for |
+| --- | --- | --- |
+| **Manual** (`default`) | `⏸ manual mode on` | Default in this repo. Claude asks before edits and commands. |
+| **Accept edits** | `⏵⏵ accept edits on` | Writing skills and agents quickly. File edits run without asking. |
+| **Plan** | `⏸ plan mode on` | Let Claude explore and propose a plan before it changes anything. |
+| **Auto** | `⏵⏵ auto mode on` | A safety classifier reviews actions instead of you. Only once your system is stable. |
+
+This repo's `.claude/settings.json` starts every session in **Manual** mode.
 
 Recommendation for this workshop:
 
-Use **default mode**, especially while your group is still learning.
-It is the easiest way to inspect evidence, discuss results, and correct the system.
+- use **Manual** while running your agentic system, so you see every command and API call
+- use **Accept edits** while writing skills and agents
+- use **Plan** when designing something bigger
 
-Use **plan mode** before bigger design changes, and **accept edits** later if your
-agentic system is already clear and you want Claude to run the full workflow more independently.
-
-Useful commands:
-
-```text
-Shift+Tab   cycle default / accept edits / plan mode
-/permissions  review which tools and commands are pre-approved
-```
+Never use `--dangerously-skip-permissions` in this lab.
 
 ## Which Model Should You Use?
 
@@ -98,10 +111,10 @@ You do not need the strongest model for every step.
 
 | Task | Recommended model |
 | --- | --- |
-| Writing skills and agents | Haiku or Sonnet |
-| Fetching and summarizing evidence | Haiku |
-| Reviewing weak evidence | Sonnet or Opus |
-| Final report polish | Sonnet or Opus |
+| Writing skills and agents | `haiku` or `sonnet` |
+| Fetching and summarizing evidence | `haiku` |
+| Reviewing weak evidence | `sonnet` or `opus` |
+| Final report polish | `sonnet` or `opus` |
 
 Switch models inside a session:
 
@@ -112,21 +125,6 @@ Switch models inside a session:
 Subagents can have their own model. Add `model: haiku` (or `sonnet`, `opus`, `inherit`)
 to an agent's frontmatter so cheap collection work runs on a cheap model
 while the lead session uses a stronger one.
-
-If you use the LiteLLM fallback, a facilitator may provide a model name.
-Set it with:
-
-macOS / Linux:
-
-```bash
-export ANTHROPIC_MODEL="<MODEL_NAME>"
-```
-
-Windows PowerShell:
-
-```powershell
-$env:ANTHROPIC_MODEL = "<MODEL_NAME>"
-```
 
 ## Work In Balanced Teams
 
@@ -149,7 +147,7 @@ This workshop material is released under the MIT License. See [LICENSE](LICENSE)
 
 You do not need to be a developer to participate.
 
-You will use a terminal, but most steps can be done by asking Claude Code to create or edit files for you.
+You will use a terminal in your browser workspace, but most steps can be done by asking Claude Code to create or edit files for you.
 If terminal commands are unfamiliar, work in pairs and copy the commands exactly.
 
 Use this rule of thumb:
@@ -226,7 +224,7 @@ Important: public data can suggest risk signals. It does not prove future claims
 
 Use this as a guide, not a rule.
 
-- **0:00-0:30**: Start Claude Code and play with the warm-up examples.
+- **0:00-0:30**: Open your workspace, start Claude Code, and play with the warm-up examples.
 - **0:30-1:00**: Learn skills and create your first own skill.
 - **1:00-1:45**: Learn agents and create your first own agent.
 - **1:45-2:30**: Explore public data sources yourself.
@@ -234,89 +232,100 @@ Use this as a guide, not a rule.
 - **3:30-4:00**: Generate, review, and improve the final report.
 - **4:00+**: Add another agent, HTML output, or a use case from your own work.
 
+## 0. Open Your Workspace
+
+Every participant gets their **own workspace**: a VS Code editor running in your browser,
+on a machine in the cloud. Claude Code and this lab are already installed there.
+You do not install anything on your laptop.
+
+1. Open the workspace link from the facilitators in your browser and sign in.
+2. Wait until you see VS Code with the file list on the left.
+
+✅ On the left you see `README.md`, `CLAUDE.md`, `outputs`, and `templates`.
+
+Your workspace is personal and keeps your files, even if you close the browser tab or take a break.
+Just open the same link again.
+
+**A quick tour of the screen:**
+
+| Area | What it is |
+| --- | --- |
+| **Explorer** (left) | All files of the lab. Click a file to open it. Folders starting with a dot, like `.claude`, are visible here too. |
+| **Editor** (middle) | Where files open. For Markdown files, right-click the tab → **Open Preview** to see them nicely formatted. |
+| **Terminal** (bottom) | Where you type commands. Open it with **Terminal → New Terminal** in the menu (☰ top left), or `` Ctrl+` ``. |
+
+Tip: open this README in preview on one side, and keep the terminal at the bottom. Then you can read and work at the same time.
+
+**Copy and paste in the terminal:** in a browser, `Ctrl+C` / `Ctrl+V` sometimes does not work inside the terminal.
+Use `Ctrl+Shift+C` / `Ctrl+Shift+V` (Mac: `Cmd+C` / `Cmd+V`), or right-click → **Paste**.
+The first time, your browser may ask whether the page may access the clipboard: choose **Allow**.
+
 ## 1. Start Claude Code
 
-Open a terminal in this folder:
+Open a terminal (**Terminal → New Terminal**). It already starts in the lab folder.
+A terminal is a text window: you type a command, press Enter, and it answers.
+In this lab you only need a handful of commands, and you can copy each of them from this guide.
 
-macOS / Linux:
+✅ Type `ls` and press Enter. You see `README.md`, `CLAUDE.md`, and `templates`.
 
-```bash
-cd workshop-agent-lab
-```
+If you do not, type `cd ~/workshop-agent-lab` (or ask a facilitator for the folder name).
 
-Windows PowerShell:
-
-```powershell
-cd workshop-agent-lab
-```
-
-Check that Claude Code is installed:
-
-```bash
-claude --version
-```
-
-If you see `command not found` or a similar error, stop here and ask a facilitator.
-Do not spend workshop time debugging installation alone.
-(For reference, the installer is `curl -fsSL https://claude.ai/install.sh | bash` on macOS / Linux
-or `irm https://claude.ai/install.ps1 | iex` in Windows PowerShell.)
-
-If this works, start Claude Code:
+Start Claude Code:
 
 ```bash
 claude
 ```
 
-Then try:
+On the first start, Claude Code may ask a few questions:
+
+1. **Theme.** Pick any.
+2. **Login.** If Claude Code asks you to log in, follow the instructions from the facilitators.
+   (Usually your workspace is already logged in, and this question does not appear.)
+3. **Do you trust this folder?** Choose **yes**. Only then does it load `CLAUDE.md`, the settings,
+   skills, and agents from this repo.
+
+✅ You see a prompt box at the bottom of the terminal. Type `Hi, what is in this folder?` and press Enter.
+Claude answers and mentions the README and the templates.
+
+Then try these commands, one at a time:
 
 ```text
-/memory
+/skills
 /agents
-/context
+/permissions
+/status
 ```
 
-These commands show what Claude Code loaded from the repository:
-`/memory` shows `CLAUDE.md`, `/agents` lists the subagents, and `/context` shows what is
-currently using the context window (including skills).
-Type `/` on its own to see all commands; skills you can invoke directly also appear there.
-If one of these commands opens a view or menu, press `Esc` to return to the chat.
+These show what Claude Code loaded from the repository, and which account and model you use.
+Press `Esc` to close a menu and return to the chat.
 
-## 2. Authenticate
+To quit Claude Code, type `/exit`. To start it again, type `claude`.
+If you want to continue your last conversation, use `claude --continue`.
 
-The first time you run `claude`, it opens a browser login.
-Sign in with the Claude account (Pro, Max, Team, or Enterprise) or Claude Console account
-your facilitator told you to use. You can switch accounts later with:
+### When Claude Asks For Permission
 
-```text
-/login
-```
+Several times per step, Claude stops and shows a box like *"Do you want to ...?"* with options.
 
-If login does not work, ask a facilitator for the LiteLLM fallback details. Then use:
+- **Yes**: allow this one action.
+- **Yes, and don't ask again ...**: fine for reading files or harmless commands such as fetching public weather data.
+- **No** (or `Esc`): refuse, and tell Claude what to do instead.
 
-macOS / Linux:
+Read the box before you answer. This box is the "human in the loop" the whole lab is about.
 
-```bash
-export ANTHROPIC_BASE_URL="<LITELLM_BASE_URL>"
-export ANTHROPIC_AUTH_TOKEN="<WORKSHOP_KEY>"
-export ANTHROPIC_MODEL="<MODEL_NAME>"
-```
+Note: Claude Code runs in the terminal, not in a chat panel of the editor. If VS Code shows other AI
+chat or Copilot features, ignore them for this lab.
 
-Windows PowerShell:
+## 2. Open A Second Terminal
 
-```powershell
-$env:ANTHROPIC_BASE_URL = "<LITELLM_BASE_URL>"
-$env:ANTHROPIC_AUTH_TOKEN = "<WORKSHOP_KEY>"
-$env:ANTHROPIC_MODEL = "<MODEL_NAME>"
-```
+Some steps (for example the Ticketmaster key, or trying a `curl` command yourself)
+are easier **outside** Claude Code.
+Keep Claude Code running and open a second terminal: click the **+** icon in the terminal panel
+(or **Terminal → New Terminal** again). Switch between them in the list on the right side of the panel.
 
-Then test:
+From now on:
 
-```bash
-claude -p "Reply with exactly READY"
-```
-
-If you are on a managed laptop and something fails, work with a partner or ask a facilitator.
-The lab is designed so teams can share one working setup.
+- commands in grey `bash` boxes go into the **second terminal**
+- everything you say to Claude goes into the **first one**, where Claude Code runs
 
 ## 3. Warm-Up: Skill And Agent
 
@@ -415,7 +424,7 @@ After you wrote it, ask Claude to review it:
 > Suggest improvements, but do not edit the file yet.
 
 Claude Code picks up skills from `.claude/skills/`. Check that it sees your new one
-by typing `/` and looking for `concise-summarizer`, or ask:
+with `/skills`, or ask:
 
 > Which skills are available in this project?
 
@@ -850,23 +859,18 @@ To get one:
 2. Create or sign in to a developer account.
 3. Create an app/project.
 4. Copy the Consumer Key / API key for the Discovery API.
-5. Store it as an environment variable.
-
-macOS / Linux:
+5. Store it as an environment variable in your workspace terminal.
 
 ```bash
 export TICKETMASTER_API_KEY="<YOUR_TICKETMASTER_KEY>"
 ```
 
-Windows PowerShell:
+An `export` only applies to the terminal you typed it in.
+Claude Code only sees the key if you start `claude` **from that same terminal** afterwards,
+so quit Claude Code (`/exit`), run the `export`, then start `claude` again.
+Never paste the key into the Claude chat.
 
-```powershell
-$env:TICKETMASTER_API_KEY = "<YOUR_TICKETMASTER_KEY>"
-```
-
-Test with a browser or terminal:
-
-macOS / Linux:
+Test it in the terminal:
 
 ```bash
 CITY="Berlin"
@@ -881,28 +885,6 @@ curl -sS "https://app.ticketmaster.com/discovery/v2/events.json" \
   --data-urlencode "endDateTime=${END}T23:59:59Z" \
   --data-urlencode "size=5" \
   --data-urlencode "sort=date,asc"
-```
-
-Windows PowerShell:
-
-```powershell
-$CITY = "Berlin"
-$START = "2026-10-01"
-$END = "2026-12-31"
-
-$params = @{
-  apikey = $env:TICKETMASTER_API_KEY
-  city = $CITY
-  startDateTime = "${START}T00:00:00Z"
-  endDateTime = "${END}T23:59:59Z"
-  size = 5
-  sort = "date,asc"
-}
-
-Invoke-RestMethod `
-  -Method Get `
-  -Uri "https://app.ticketmaster.com/discovery/v2/events.json" `
-  -Body $params
 ```
 
 A no-auth starting point you can run right away is the weather forecast for a city.
@@ -1153,34 +1135,16 @@ claude -p "Summarize README.md in three bullets."
 
 Run with a specific agent as the main session:
 
-macOS / Linux:
-
 ```bash
 claude --agent poet \
-  -p "Write a 4-line poem about clean data."
-```
-
-Windows PowerShell:
-
-```powershell
-claude --agent poet `
   -p "Write a 4-line poem about clean data."
 ```
 
 Pre-approve specific tools for a non-interactive run
 (safer than skipping all permission checks):
 
-macOS / Linux:
-
 ```bash
 claude -p "Fetch the Berlin forecast from Open-Meteo and save a summary in outputs/." \
-  --allowedTools "Bash(curl:*)" "Write" "Read"
-```
-
-Windows PowerShell:
-
-```powershell
-claude -p "Fetch the Berlin forecast from Open-Meteo and save a summary in outputs/." `
   --allowedTools "Bash(curl:*)" "Write" "Read"
 ```
 
@@ -1194,8 +1158,10 @@ claude --continue
 Inspect what is loaded:
 
 ```text
-/memory
+/skills
 /agents
+/permissions
+/status
 /context
 ```
 
