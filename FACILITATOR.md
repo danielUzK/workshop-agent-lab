@@ -204,7 +204,6 @@ In a fresh participant workspace:
 - [ ] **Markdown preview** of `README.md` works (right-click tab → Open Preview).
 - [ ] **Restart** with `/exit` and `claude` works, and a new helper agent is picked up afterwards.
 - [ ] **HUMAN-T6**: the web page opens from the **Ports** tab or the notification.
-- [ ] **Download**: right-click `.claude` → **Download** works.
 - [ ] **Persistence**: close the tab, reopen the link later. Files are still there.
 - [ ] **Timing**: steps 1–2 should take about 45 minutes for a beginner. Note your time and add 50% for participants.
 

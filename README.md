@@ -539,9 +539,6 @@ Improve it until you are happy. Add a helper agent only if you need a separate r
 - **Helper agents** give a task a clear owner and clear limits.
 - **You stay in charge**: read what the agent wants to do, then decide.
 
-Want to keep your skills and helper agents? Before the end of the workshop, right-click the `.claude` folder
-in the file list → **Download**. Your workspace is deleted after the workshop.
-
 ## License
 
 This workshop material is released under the MIT License. See [LICENSE](LICENSE).
