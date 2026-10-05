@@ -147,11 +147,19 @@ in the form "Given ... when ... then ...".
 
 ### 2.3 Try it again from scratch
 
-Clear the backlog and run the same request again:
+Clear the backlog:
 
 ```text
 Delete all files in the backlog folder except .gitkeep.
 ```
+
+Now start a **fresh conversation**, so Claude forgets what you told it in 2.2. Type:
+
+```text
+/clear
+```
+
+Then run the same request as in 2.1 again:
 
 ```text
 Read examples/meeting-notes.md and turn it into tickets.
@@ -236,6 +244,7 @@ Every ticket has:
 - Labels: only feature, bug, or chore
 
 Keep each ticket short enough to read in one minute.
+At the end, list anything from the input you merged or skipped, and why.
 ```
 
 ✅ The file appears under `.claude/skills/ticket-writer/`.
@@ -370,7 +379,8 @@ Ask the backlog-reviewer to fix the worst ticket.
 ```
 
 ✅ Claude explains that the reviewer can only give feedback: it has no tool to change files, so it really cannot.
-Claude itself, however, *can* change files. It will usually offer to fix the ticket, or ask you before doing it.
+Claude itself, however, *can* change files. It will offer to fix the ticket itself.
+Say **no** for now, or choose **No** if a permission box appears. You will improve tickets in step 5.
 
 That is the point of a helper agent: **you decide what each helper is allowed to do.**
 The reviewer only judges. The writing stays with Claude, and with you approving.

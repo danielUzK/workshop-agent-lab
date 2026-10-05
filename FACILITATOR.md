@@ -16,7 +16,7 @@ Section [4](#4-workspace-image-checklist) is the checklist for whoever builds th
 2. Open a terminal and start Claude in the lab folder:
 
    ```bash
-   cd ~/workshop-agent-lab   # or wherever the lab is cloned
+   cd ~/workshop-agent-lab*   # the lab folder; its exact name may differ
    claude
    ```
 
@@ -74,7 +74,8 @@ echo $HOME; pwd; ls -la
 Create the test copy:
 
 ```bash
-rm -rf /tmp/lab-test && cp -r "$(pwd)" /tmp/lab-test && rm -rf /tmp/lab-test/outputs/* && find /tmp/lab-test/backlog -type f ! -name .gitkeep -delete
+rm -rf /tmp/lab-test && cp -r "$(pwd)" /tmp/lab-test
+find /tmp/lab-test/outputs /tmp/lab-test/backlog -type f ! -name .gitkeep -delete
 ```
 
 ### T1. Model access
@@ -202,6 +203,9 @@ In a fresh participant workspace:
 - [ ] **Permission box** appears for README 1.4 with Yes / Yes, and don't ask again / No.
 - [ ] **Paste** in the terminal works with `Ctrl+Shift+V` (Mac: `Cmd+V`) and right-click → Paste.
 - [ ] **Markdown preview** of `README.md` works (right-click tab → Open Preview).
+- [ ] **Editing a skill** (README 3.5): Claude shows a permission box before changing `.claude/skills/ticket-writer/SKILL.md`,
+      and the change is saved after **Yes**. (Print mode cannot test this: `.claude/` always needs interactive approval.)
+- [ ] **Helper limits** (README 4.3): Claude explains the reviewer cannot change files and asks before fixing the ticket itself.
 - [ ] **Restart** with `/exit` and `claude` works, and a new helper agent is picked up afterwards.
 - [ ] **HUMAN-T6**: the web page opens from the **Ports** tab or the notification.
 - [ ] **Persistence**: close the tab, reopen the link later. Files are still there.

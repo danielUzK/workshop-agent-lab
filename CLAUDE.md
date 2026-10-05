@@ -15,12 +15,14 @@ The example domain is a development team's everyday work: tickets, backlog, revi
 - Most participants are new to AI agents, and many are not developers. Use plain language, short answers,
   and no jargon. Explain technical terms in one sentence when you have to use them.
 - When you create or change a file, say in one sentence what you did and why.
+- Keep answers short. When a helper agent returns a result, show its result and add at most two sentences.
+- If the user asks a helper agent to do something its tools do not allow, first explain that clearly in one sentence.
+  Then ask whether you should do it yourself instead. Do not just do it.
 - Prefer small, inspectable Markdown files.
 
 ## Where things go
 
 - Tickets are Markdown files in `backlog/`, one file per ticket, named `NNN-short-title.md`.
-  Do not impose a ticket structure here: participants define it themselves in their own skill.
 - Other results (reports, summaries, web pages) go into `outputs/`.
 - Fictional input material is in `examples/`.
 
